@@ -2,6 +2,7 @@
   <button
     class="base-button"
     :class="classes"
+    @click="$emit('click')"
   >
     <div
       v-if="isBefore"
