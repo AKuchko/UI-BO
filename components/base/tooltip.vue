@@ -3,7 +3,7 @@
     class="base-tooltip"
     :class="classes"
   >
-    <transition name="fade">
+    <transition-fade>
       <div
         v-if="active"
         ref="tooltip"
@@ -11,7 +11,7 @@
       >
         <slot name="tooltip" />
       </div>
-    </transition>
+    </transition-fade>
     <div
       ref="trigger"
       class="base-tooltip__trigger"
@@ -34,6 +34,7 @@ export default {
   data () {
     return {
       active: false,
+      class: 'base-tooltip',
     };
   },
   computed: {
@@ -58,19 +59,12 @@ export default {
         ...(
           this.position === 'auto'
             ? this.getAutoPositionClasses()
-            : {
-              'base-tooltip--top': this.position === 'top',
-              'base-tooltip--bottom': this.position === 'bottom',
-            }
+            : { [`${this.class}--${this.position}`]: true }
         ),
         ...(
           this.align === 'auto'
             ? this.getAutoAlignClasses()
-            : {
-              'base-tooltip--right': this.align === 'right',
-              'base-tooltip--left': this.align === 'left',
-              'base-tooltip--center': this.align === 'center',
-            }
+            : { [`${this.class}--${this.align}`]: true }
         ),
       };
     },
@@ -88,8 +82,8 @@ export default {
       const positionTop = !positionBottom || triggerRect.y > windowHeight - 50;
 
       return {
-        'base-tooltip--bottom': positionBottom,
-        'base-tooltip--top': positionTop,
+        [`${this.class}--bottom`]: positionBottom,
+        [`${this.class}--top`]: positionTop,
       };
     },
     getAutoAlignClasses () {
@@ -101,14 +95,14 @@ export default {
       const triggerRect = this.$refs.trigger.getBoundingClientRect();
       const windowWidth = window.innerWidth;
 
-      const alignLeft = triggerRect.x + triggerRect.width > windowWidth - 100;
-      const alignRight = triggerRect.x < 100;
+      const alignRight = triggerRect.x + triggerRect.width > windowWidth - 100;
+      const alignLeft = triggerRect.x < 100;
       const alignCenter = !alignRight && !alignLeft;
 
       return {
-        'base-tooltip--left': alignLeft,
-        'base-tooltip--right': alignRight,
-        'base-tooltip--center': alignCenter,
+        [`${this.class}--left`]: alignLeft,
+        [`${this.class}--right`]: alignRight,
+        [`${this.class}--center`]: alignCenter,
       }
     },
   },
@@ -118,12 +112,11 @@ export default {
 <style lang="scss">
 .base-tooltip {
   position: relative;
-  color: $contrast-color;
+  color: $tooltip-color;
 
   &__tooltip-content {
     position: absolute;
     width: max-content;
-    transform: translate(-50%, calc(-100% - 12px));
     padding: 12px 10px;
     border-radius: 5px;
     background: $grey-color;
@@ -241,16 +234,6 @@ export default {
         transform: translateY(50%) rotate(45deg);
       }
     }
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 }
 </style>
