@@ -4,7 +4,7 @@
       <base-button title="Button" />
       <base-button title="Button" disabled />
       <base-button title="Button" outlined />
-      <base-button title="Button" icon="icon-cog" />
+      <base-button title="Button" icon="icon-cog" @click="addP" />
     </div>
     <div class="buttons-small">
       <base-button title="Button" small />
@@ -24,9 +24,7 @@
       </base-chip>
     </div>
     <div class="buttons">
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
+      <p v-for="p in ps">{{ p }}</p>
       <base-tooltip>
         <template v-slot:trigger>
           <base-chip accent>
@@ -37,13 +35,53 @@
           Tooltip content text
         </template>
       </base-tooltip>
+      <base-tooltip>
+        <template v-slot:trigger>
+          <base-chip accent>
+            Base chip
+          </base-chip>
+        </template>
+        <template v-slot:tooltip>
+          Tooltip content text
+        </template>
+      </base-tooltip>
+      <base-tooltip>
+        <template v-slot:trigger>
+          <base-chip accent>
+            Base chip
+          </base-chip>
+        </template>
+        <template v-slot:tooltip>
+          Tooltip content text
+        </template>
+      </base-tooltip>
+      <base-dots-menu />
+      <p v-for="p in ps">{{ p }}</p>
+    </div>
+    <div class="buttons">
+      <base-dots-menu />
+      <user-avatar name="Кучко Алексанндр Сергеевич" />
+      <user-avatar name="Стул 120" />
+      <user-avatar name="Михаил Грунев" />
+      <user-avatar name="Скултан Юлия" current-user />
+      <user-avatar name="Елисеев Владислав Сергеевич" current-user />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  data () {
+    return {
+      ps: [],
+    };
+  },
+  methods: {
+    addP () {
+      this.ps.push('p')
+    }
+  }
 }
 </script>
 
@@ -52,6 +90,7 @@ export default {
   padding: 20px;
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 
   .buttons {
     display: flex;
